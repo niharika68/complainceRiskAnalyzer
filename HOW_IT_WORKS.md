@@ -109,9 +109,21 @@ The report is saved to: `compliance_output/risk_report.txt`
 
 ## Technology Stack
 
-- **LangGraph** - Orchestrates the multi-step workflow
-- **AWS Bedrock** - AI and knowledge base retrieval
-- **Claude AI** - Generates executive summaries
-- **DuckDuckGo API** - Searches for regulatory updates
 - **Python** - Programming language
+- **AWS Bedrock** - AI and knowledge base retrieval
+- **Model LLM** - amazon.nova-lite-v1. Generates executive summaries
+- **LangGraph** - Orchestrates the multi-step workflow
+- **Pydantic** - Provides strict type validation and automatic data validation (defines RiskEvaluation and CustomerRiskReport models)
+- **DuckDuckGo API** - Searches for regulatory updates from duckduckGo
 - **Poetry** - Dependency management
+
+---
+
+## Future Updates
+
+- **FastAPI** - Build a REST API to send compliance reports and risk data to downstream systems. 
+- Real-time alerts - Notify stakeholders when high-risk issues are detected
+- Dashboard visualization - Create an interactive dashboard to view compliance status through tableau API
+
+
+
