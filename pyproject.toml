@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "complainceriskanalyzer"
+version = "0.1.0"
+description = ""
+authors = ["Niharika68 <nihapat2@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^0.21"
+pydantic = "^2.0"
+langchain = "^0.2"
+langchain-aws = "^0.1"
+langchain-community = "^0.2"
+langgraph = "^0.1"
+boto3 = "^1.26"
+duckduckgo-search = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

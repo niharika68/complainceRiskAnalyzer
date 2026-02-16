@@ -1,0 +1,118 @@
+================================================================================
+340B PROGRAM COMPLIANCE RISK DETECTION REPORT
+================================================================================
+
+EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+The analysis identified CE_Gamma as a high-risk customer, with high-risk levels across all three metrics: Negative Accumulation Ordering, Match Rate Decline, and Referral Capture Under-Utilization. Immediate attention is required to address inventory control weaknesses, incomplete documentation, and operational inefficiencies to ensure compliance with the 340B program.
+
+CUSTOMER RISK ANALYSIS
+--------------------------------------------------------------------------------
+
+Customer: CE_Alpha
+  High Risk Issues: 0
+  Medium Risk Issues: 0
+  Low Risk Issues: 3
+
+  • Negative Accum Count
+    Value: 3.0
+    Risk Level: Low Risk
+    Threshold: 0–5
+    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+
+  • Match Rate Percent
+    Value: 91.0
+    Risk Level: Low Risk
+    Threshold: >85
+    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+
+  • Referral Capture Rate Percent
+    Value: 68.0
+    Risk Level: Low Risk
+    Threshold: >60
+    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+
+Customer: CE_Beta
+  High Risk Issues: 0
+  Medium Risk Issues: 3
+  Low Risk Issues: 0
+
+  • Negative Accum Count
+    Value: 12.0
+    Risk Level: Medium Risk
+    Threshold: 6–15
+    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+
+  • Match Rate Percent
+    Value: 78.0
+    Risk Level: Medium Risk
+    Threshold: 70–85
+    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+
+  • Referral Capture Rate Percent
+    Value: 55.0
+    Risk Level: Medium Risk
+    Threshold: 40–60
+    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+
+Customer: CE_Gamma
+  High Risk Issues: 3
+  Medium Risk Issues: 0
+  Low Risk Issues: 0
+
+  • Negative Accum Count
+    Value: 22.0
+    Risk Level: High Risk
+    Threshold: >15
+    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+
+  • Match Rate Percent
+    Value: 65.0
+    Risk Level: High Risk
+    Threshold: <70
+    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+
+  • Referral Capture Rate Percent
+    Value: 32.0
+    Risk Level: High Risk
+    Threshold: <40
+    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+
+Customer: CE_Delta
+  High Risk Issues: 0
+  Medium Risk Issues: 3
+  Low Risk Issues: 0
+
+  • Negative Accum Count
+    Value: 7.0
+    Risk Level: Medium Risk
+    Threshold: 6–15
+    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+
+  • Match Rate Percent
+    Value: 84.0
+    Risk Level: Medium Risk
+    Threshold: 70–85
+    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+
+  • Referral Capture Rate Percent
+    Value: 42.0
+    Risk Level: Medium Risk
+    Threshold: 40–60
+    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+
+================================================================================
+REGULATORY CONTEXT
+================================================================================
+Query: 340B program compliance risks 2025 2026
+DuckDuckGo search for '340B program compliance risks 2025 2026' completed. Regulatory updates and guidance available online.
+
+Query: healthcare diversion compliance negative accumulation
+DuckDuckGo search for 'healthcare diversion compliance negative accumulation' completed. Regulatory updates and guidance available online.
+
+Query: patient eligibility matching audit requirements
+DuckDuckGo search for 'patient eligibility matching audit requirements' completed. Regulatory updates and guidance available online.
+
+
+Report Generated: Mon Feb 16 04:25:47 UTC 2026
+================================================================================
