@@ -111,7 +111,7 @@ The report is saved to: `compliance_output/risk_report.txt`
 
 - **LangGraph** - Orchestrates the multi-step workflow
 - **AWS Bedrock** - AI and knowledge base retrieval
-- **Claude AI** - Generates executive summaries
+- **Bedrock Model** - "amazon.nova-lite-v1" Generates executive summaries
 - **DuckDuckGo API** - Searches for regulatory updates
 - **Python** - Programming language
 - **Poetry** - Dependency management
