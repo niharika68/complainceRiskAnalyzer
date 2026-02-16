@@ -121,9 +121,9 @@ The report is saved to: `compliance_output/risk_report.txt`
 
 ## Future Updates
 
-- **FastAPI** - Build a REST API to send compliance reports and risk data to downstream systems. 
+- **FastAPI** - Build a REST API to send compliance reports and risk data to downstream systems
 - Real-time alerts - Notify stakeholders when high-risk issues are detected
-- Dashboard visualization - Create an interactive dashboard to view compliance status through tableau API
+- Dashboard visualization - Create an interactive dashboard to view compliance status
 
 
 
