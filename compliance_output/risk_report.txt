@@ -4,7 +4,7 @@
 
 EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
-The analysis identified CE_Gamma as a high-risk customer, with high-risk levels across all three metrics: Negative Accumulation Ordering, Match Rate Decline, and Referral Capture Under-Utilization. Immediate attention is required to address inventory control weaknesses, incomplete documentation, and operational inefficiencies to ensure compliance with the 340B program.
+The analysis reveals that CE_Gamma is at high risk across all three 340B program risk indicators, with a Negative Accumulation Count of 22, a Match Rate of 65%, and a Referral Capture Rate of 32%. This places CE_Gamma as the primary high-risk customer, necessitating immediate attention to mitigate compliance risks and ensure program integrity.
 
 CUSTOMER RISK ANALYSIS
 --------------------------------------------------------------------------------
@@ -18,19 +18,19 @@ Customer: CE_Alpha
     Value: 3.0
     Risk Level: Low Risk
     Threshold: 0–5
-    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+    Description: 
 
   • Match Rate Percent
     Value: 91.0
     Risk Level: Low Risk
     Threshold: >85
-    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+    Description: 
 
   • Referral Capture Rate Percent
     Value: 68.0
     Risk Level: Low Risk
     Threshold: >60
-    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+    Description: 
 
 Customer: CE_Beta
   High Risk Issues: 0
@@ -41,19 +41,19 @@ Customer: CE_Beta
     Value: 12.0
     Risk Level: Medium Risk
     Threshold: 6–15
-    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+    Description: 
 
   • Match Rate Percent
     Value: 78.0
     Risk Level: Medium Risk
     Threshold: 70–85
-    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+    Description: 
 
   • Referral Capture Rate Percent
     Value: 55.0
     Risk Level: Medium Risk
     Threshold: 40–60
-    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+    Description: 
 
 Customer: CE_Gamma
   High Risk Issues: 3
@@ -64,19 +64,19 @@ Customer: CE_Gamma
     Value: 22.0
     Risk Level: High Risk
     Threshold: >15
-    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+    Description: 
 
   • Match Rate Percent
     Value: 65.0
     Risk Level: High Risk
     Threshold: <70
-    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+    Description: 
 
   • Referral Capture Rate Percent
     Value: 32.0
     Risk Level: High Risk
     Threshold: <40
-    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+    Description: 
 
 Customer: CE_Delta
   High Risk Issues: 0
@@ -87,32 +87,33 @@ Customer: CE_Delta
     Value: 7.0
     Risk Level: Medium Risk
     Threshold: 6–15
-    Description: Ordering drugs while accumulations are negative may indicate inventory control weaknesses.
+    Description: 
 
   • Match Rate Percent
     Value: 84.0
     Risk Level: Medium Risk
     Threshold: 70–85
-    Description: Low match rates may indicate incomplete documentation or eligibility classification issues.
+    Description: 
 
   • Referral Capture Rate Percent
     Value: 42.0
     Risk Level: Medium Risk
     Threshold: 40–60
-    Description: Low referral capture may indicate operational inefficiencies or missed program opportunities.
+    Description: 
 
 ================================================================================
-REGULATORY CONTEXT
+HRSA 340B PROGRAM GUIDANCE
 ================================================================================
-Query: 340B program compliance risks 2025 2026
-DuckDuckGo search for '340B program compliance risks 2025 2026' completed. Regulatory updates and guidance available online.
+latest 340B related updates:
+Search results for 'latest 340B related updates'. For more information, go to HRSA's website: https://www.hrsa.gov/340b
 
-Query: healthcare diversion compliance negative accumulation
-DuckDuckGo search for 'healthcare diversion compliance negative accumulation' completed. Regulatory updates and guidance available online.
+340B drug pricing program:
+• Drug pricing
+• Health Resources and Services Administration
 
-Query: patient eligibility matching audit requirements
-DuckDuckGo search for 'patient eligibility matching audit requirements' completed. Regulatory updates and guidance available online.
+HRSA 340B compliance:
+Search results for 'HRSA 340B compliance'. For more information, go to HRSA's website: https://www.hrsa.gov/340b
 
 
-Report Generated: Mon Feb 16 04:25:47 UTC 2026
+Report Generated: Mon Feb 16 16:13:22 UTC 2026
 ================================================================================

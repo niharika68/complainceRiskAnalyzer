@@ -4,12 +4,12 @@ from typing import TypedDict
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from langchain_aws import ChatBedrockConverse
-from langchain_core.messages import HumanMessage
 from langchain_community.tools import DuckDuckGoSearchRun
 from langgraph.graph import StateGraph, START, END
 import boto3
 import requests
 from urllib.parse import quote
+
 
 # Load .env from project root
 load_dotenv()
@@ -32,67 +32,63 @@ class CustomerRiskReport(BaseModel):
     medium_risk_count: int
     low_risk_count: int
 
-class ComplianceReport(BaseModel):
-    """Final compliance risk detection report."""
-    summary: str
-    customer_reports: list[CustomerRiskReport]
-    regulatory_context: str
-    timestamp: str
-
 # --- STATE DEFINITION ---
 class ComplianceState(TypedDict):
     """State for compliance risk detection workflow."""
     customer_metrics: dict
     knowledge_base: str
+    risk_descriptions: dict
     risk_evaluations: list[RiskEvaluation]
     customer_reports: list[CustomerRiskReport]
     regulatory_updates: str
+    hrsa_guidance: str
     final_report: str
 
 # --- INITIALIZATION ---
 search = DuckDuckGoSearchRun()
 
 def duckduckgo_search(query: str) -> str:
-    """Search DuckDuckGo using direct requests approach to avoid proxy issues."""
+    """Fetch search results from DuckDuckGo."""
     try:
-        # Try using the langchain tool first
-        return search.run(query)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        url = f"https://api.duckduckgo.com/?q={quote(query)}&format=json&t=health340b"
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        
+        data = response.json()
+        results = []
+        
+        # Try Results first (main search results)
+        if data.get('Results'):
+            for result in data['Results'][:3]:
+                if 'Text' in result:
+                    results.append(f"• {result['Text'][:150]}")
+                    if 'FirstURL' in result:
+                        results.append(f"  Source: {result['FirstURL']}")
+        
+        # Fall back to RelatedTopics if no Results
+        if not results and data.get('RelatedTopics'):
+            for item in data['RelatedTopics'][:3]:
+                if 'Text' in item:
+                    results.append(f"• {item['Text'][:150]}")
+        
+        # Fall back to AbstractText
+        if not results and data.get('AbstractText'):
+            results.append(f"Summary: {data['AbstractText']}")
+            if data.get('AbstractURL'):
+                results.append(f"Source: {data['AbstractURL']}")
+        
+        if results:
+            return "\n".join(results)
+        else:
+            return f"Search results for '{query}'. For more information, go to HRSA's website: https://www.hrsa.gov/340b"
+            
     except Exception as e:
-        print(f"  Fallback: LangChain search failed, using direct API")
-        try:
-            # Fallback: Use direct HTML scraping approach
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
-            }
-            
-            # Try the HTML endpoint first
-            url = f"https://html.duckduckgo.com/?q={quote(query)}"
-            response = requests.get(url, headers=headers, timeout=10)
-            
-            # Extract basic search result summary
-            if response.status_code == 200:
-                # Simple extraction of relevant info
-                if '340B' in response.text or 'compliance' in response.text.lower():
-                    return f"DuckDuckGo results for '{query}': Found relevant 340B compliance information online.\n" \
-                           "Key topics include: program management, diversion prevention, patient eligibility, and regulatory compliance."
-                else:
-                    return f"DuckDuckGo search for '{query}' completed. Regulatory updates and guidance available online."
-            
-            return f"Search results for '{query}' retrieved from regulatory databases."
-        except Exception as fallback_error:
-            # Provide generic regulatory context when search fails
-            regulatory_suggestions = {
-                "340B program compliance": "Recent regulatory guidance emphasizes stronger controls on accumulation tracking and diversion prevention.",
-                "negative accumulation": "HRSA guidance recommends monitoring negative accumulation patterns as early indicators of inventory management issues.",
-                "match rate": "Patient eligibility documentation must be maintained with higher accuracy rates to ensure program integrity.",
-                "referral capture": "Covered entities should enhance referral capture processes to maximize program utilization and compliance."
-            }
-            
-            for key, value in regulatory_suggestions.items():
-                if key.lower() in query.lower():
-                    return value
-            
-            return f"Regulatory context: Continuous monitoring of compliance metrics is essential for 340B program integrity."
+        print(f"  Exception in search: {type(e).__name__}: {str(e)}")
+        return "For detailed information about the 340B program, please visit HRSA's official website: https://www.hrsa.gov/340b"
 
 # AWS Bedrock Agent Runtime client for Knowledge Base queries
 bedrock_agent_runtime = boto3.client(
@@ -139,6 +135,13 @@ def parse_csv_metrics(csv_content: str) -> dict:
                 print(f"  Skipping invalid line: {line}")
     
     return metrics
+
+def extract_sentence(keyword: str, text: str) -> str:
+    """Extract first sentence containing keyword from text."""
+    for sentence in text.split('.'):
+        if keyword.lower() in sentence.lower():
+            return sentence.strip() + '.'
+    return ''
 
 def evaluate_risk_level(metric_name: str, value: float) -> tuple[str, str]:
     """Determine risk level and threshold range based on metric thresholds."""
@@ -193,14 +196,11 @@ def retrieve_customer_metrics(state: ComplianceState) -> ComplianceState:
             }
         )
         csv_content = response.get('output', {}).get('text', '')
-        print(f"DEBUG - Raw KB Response:\n{csv_content}\n")
         metrics = parse_csv_metrics(csv_content)
         print(f"Retrieved metrics for {len(metrics)} customers from Bedrock KB")
         state['customer_metrics'] = metrics
     except Exception as e:
         print(f"Error retrieving metrics from Bedrock KB: {e}")
-        import traceback
-        traceback.print_exc()
         state['customer_metrics'] = {}
     
     return state
@@ -223,9 +223,17 @@ def retrieve_knowledge_base(state: ComplianceState) -> ComplianceState:
         kb_content = response.get('output', {}).get('text', '')
         print(f"Retrieved knowledge base ({len(kb_content)} characters) from Bedrock KB")
         state['knowledge_base'] = kb_content
+        
+        # Pre-index risk descriptions from KB
+        state['risk_descriptions'] = {
+            'negative_accum': extract_sentence('Ordering drugs', kb_content),
+            'match_rate': extract_sentence('Low match rates', kb_content),
+            'referral': extract_sentence('Low referral capture', kb_content)
+        }
     except Exception as e:
         print(f"Error retrieving knowledge base from Bedrock KB: {e}")
         state['knowledge_base'] = ""
+        state['risk_descriptions'] = {}
     
     return state
 
@@ -235,12 +243,17 @@ def evaluate_risks(state: ComplianceState) -> ComplianceState:
     
     risk_evaluations = []
     metrics = state['customer_metrics']
+    risk_descriptions = state['risk_descriptions']
     
-    risk_descriptions = {
-        'negative_accum_count': 'Ordering drugs while accumulations are negative may indicate inventory control weaknesses.',
-        'match_rate_percent': 'Low match rates may indicate incomplete documentation or eligibility classification issues.',
-        'referral_capture_rate_percent': 'Low referral capture may indicate operational inefficiencies or missed program opportunities.'
-    }
+    def get_risk_description(metric_name: str) -> str:
+        """Retrieve pre-indexed risk description from state."""
+        if 'negative_accum' in metric_name:
+            return risk_descriptions.get('negative_accum', '')
+        elif 'match_rate' in metric_name:
+            return risk_descriptions.get('match_rate', '')
+        elif 'referral' in metric_name:
+            return risk_descriptions.get('referral', '')
+        return ''
     
     for customer_id, metrics_data in metrics.items():
         for metric_name, value in metrics_data.items():
@@ -252,7 +265,7 @@ def evaluate_risks(state: ComplianceState) -> ComplianceState:
                 value=value,
                 risk_level=risk_level,
                 threshold_range=threshold_range,
-                explanation=risk_descriptions.get(metric_name, '')
+                explanation=get_risk_description(metric_name)
             )
             risk_evaluations.append(evaluation)
             print(f"  {customer_id} - {metric_name}: {value} → {risk_level}")
@@ -301,6 +314,29 @@ def search_regulatory_updates(state: ComplianceState) -> ComplianceState:
     
     regulatory_context = "\n".join(all_results)
     state['regulatory_updates'] = regulatory_context
+    return state
+
+def retrieve_hrsa_guidance(state: ComplianceState) -> ComplianceState:
+    """Retrieve latest HRSA 340B Program information from DuckDuckGo."""
+    print("\n=== NODE: Retrieve HRSA Guidance ===")
+    
+    hrsa_queries = [
+        "latest 340B related updates",
+        "340B drug pricing program",
+        "HRSA 340B compliance"
+    ]
+    
+    all_hrsa_results = []
+    for query in hrsa_queries:
+        try:
+            results = duckduckgo_search(query)
+            all_hrsa_results.append(f"{query}:\n{results}\n")
+            print(f"  Searched: {query}")
+        except Exception as e:
+            print(f"  Error searching '{query}': {e}")
+    
+    hrsa_context = "\n".join(all_hrsa_results)
+    state['hrsa_guidance'] = hrsa_context if hrsa_context.strip() else "For detailed information about the 340B program, please visit HRSA's official website: https://www.hrsa.gov/340b"
     return state
 
 def generate_report(state: ComplianceState) -> ComplianceState:
@@ -365,9 +401,9 @@ Provide a 2-3 sentence summary highlighting the most critical risks detected."""
     
     report_lines.append("")
     report_lines.append("=" * 80)
-    report_lines.append("REGULATORY CONTEXT")
+    report_lines.append("HRSA 340B PROGRAM GUIDANCE")
     report_lines.append("=" * 80)
-    report_lines.append(regulatory_updates[:1000])
+    report_lines.append(state['hrsa_guidance'][:2000])
     report_lines.append("")
     report_lines.append(f"Report Generated: {os.popen('date -u').read().strip()}")
     report_lines.append("=" * 80)
@@ -385,13 +421,15 @@ workflow.add_node("retrieve_metrics", retrieve_customer_metrics)
 workflow.add_node("retrieve_kb", retrieve_knowledge_base)
 workflow.add_node("evaluate_risks", evaluate_risks)
 workflow.add_node("search_regulations", search_regulatory_updates)
+workflow.add_node("retrieve_hrsa", retrieve_hrsa_guidance)
 workflow.add_node("generate_report", generate_report)
 
 workflow.add_edge(START, "retrieve_metrics")
 workflow.add_edge("retrieve_metrics", "retrieve_kb")
 workflow.add_edge("retrieve_kb", "evaluate_risks")
 workflow.add_edge("evaluate_risks", "search_regulations")
-workflow.add_edge("search_regulations", "generate_report")
+workflow.add_edge("search_regulations", "retrieve_hrsa")
+workflow.add_edge("retrieve_hrsa", "generate_report")
 workflow.add_edge("generate_report", END)
 
 app = workflow.compile()
@@ -403,9 +441,11 @@ if __name__ == "__main__":
     initial_state: ComplianceState = {
         'customer_metrics': {},
         'knowledge_base': '',
+        'risk_descriptions': {},
         'risk_evaluations': [],
         'customer_reports': [],
         'regulatory_updates': '',
+        'hrsa_guidance': '',
         'final_report': ''
     }
     
