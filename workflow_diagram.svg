@@ -1,0 +1,219 @@
+<svg viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .header { font-size: 28px; font-weight: bold; fill: #1a1a1a; }
+      .subheader { font-size: 18px; font-weight: bold; fill: #2c3e50; }
+      .node-title { font-size: 14px; font-weight: bold; fill: white; }
+      .node-text { font-size: 12px; fill: #333; }
+      .label { font-size: 13px; fill: #555; font-weight: 500; }
+      .arrow { stroke: #2c3e50; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .data-arrow { stroke: #e74c3c; stroke-width: 2; fill: none; marker-end: url(#arrowhead-red); stroke-dasharray: 5,5; }
+      .node-step { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .node-data { fill: #9b59b6; stroke: #8e44ad; stroke-width: 2; }
+      .node-output { fill: #27ae60; stroke: #229954; stroke-width: 2; }
+      .node-search { fill: #e67e22; stroke: #d35400; stroke-width: 2; }
+      .legend-box { fill: #ecf0f1; stroke: #bdc3c7; stroke-width: 1; }
+      .risk-low { fill: #2ecc71; }
+      .risk-medium { fill: #f39c12; }
+      .risk-high { fill: #e74c3c; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2c3e50" />
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e74c3c" />
+    </marker>
+  </defs>
+
+  <!-- Header -->
+  <text x="700" y="35" text-anchor="middle" class="header">🏥 Compliance Risk Analyzer - LangGraph Workflow</text>
+
+  <!-- Data Sources Section -->
+  <text x="50" y="80" class="subheader">Data Sources</text>
+  
+  <!-- AWS Bedrock Box -->
+  <rect x="30" y="100" width="140" height="80" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+  <text x="100" y="125" text-anchor="middle" class="node-title">AWS Bedrock</text>
+  <text x="100" y="145" text-anchor="middle" class="node-text">Knowledge Base</text>
+  <text x="100" y="160" text-anchor="middle" class="node-text">&amp; Retrieval</text>
+
+  <!-- S3 Data Box -->
+  <rect x="200" y="100" width="140" height="80" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+  <text x="270" y="125" text-anchor="middle" class="node-title">S3 Bucket</text>
+  <text x="270" y="145" text-anchor="middle" class="node-text">Customer Metrics</text>
+  <text x="270" y="160" text-anchor="middle" class="node-text">&amp; Risk Defs</text>
+
+  <!-- DuckDuckGo Box -->
+  <rect x="370" y="100" width="140" height="80" fill="#e67e22" stroke="#d35400" stroke-width="2" rx="5"/>
+  <text x="440" y="125" text-anchor="middle" class="node-title">DuckDuckGo</text>
+  <text x="440" y="145" text-anchor="middle" class="node-text">Regulatory</text>
+  <text x="440" y="160" text-anchor="middle" class="node-text">Updates</text>
+
+  <!-- HRSA Web Box -->
+  <rect x="540" y="100" width="140" height="80" fill="#e67e22" stroke="#d35400" stroke-width="2" rx="5"/>
+  <text x="610" y="125" text-anchor="middle" class="node-title">HRSA Web</text>
+  <text x="610" y="145" text-anchor="middle" class="node-text">340B Program</text>
+  <text x="610" y="160" text-anchor="middle" class="node-text">Guidance</text>
+
+  <!-- Workflow Steps Section -->
+  <text x="50" y="220" class="subheader">LangGraph Workflow Nodes</text>
+
+  <!-- Step 1: Retrieve Customer Metrics -->
+  <g>
+    <rect x="30" y="250" width="180" height="100" class="node-step" rx="8"/>
+    <text x="120" y="275" text-anchor="middle" class="node-title">Step 1</text>
+    <text x="120" y="298" text-anchor="middle" class="node-title">Retrieve Customer Metrics</text>
+    <text x="120" y="320" text-anchor="middle" class="node-text">Parse CSV data from</text>
+    <text x="120" y="335" text-anchor="middle" class="node-text">AWS Bedrock/S3</text>
+  </g>
+
+  <!-- Arrow to Step 2 -->
+  <path d="M 210 300 L 260 300" class="arrow"/>
+
+  <!-- Step 2: Retrieve Knowledge Base -->
+  <g>
+    <rect x="260" y="250" width="180" height="100" class="node-step" rx="8"/>
+    <text x="350" y="275" text-anchor="middle" class="node-title">Step 2</text>
+    <text x="350" y="298" text-anchor="middle" class="node-title">Retrieve Knowledge Base</text>
+    <text x="350" y="320" text-anchor="middle" class="node-text">Get risk definitions:</text>
+    <text x="350" y="335" text-anchor="middle" class="node-text">Negative, Match, Referral</text>
+  </g>
+
+  <!-- Arrow to Step 3 -->
+  <path d="M 440 300 L 490 300" class="arrow"/>
+
+  <!-- Step 3: Evaluate Risks -->
+  <g>
+    <rect x="490" y="250" width="180" height="100" class="node-step" rx="8"/>
+    <text x="580" y="275" text-anchor="middle" class="node-title">Step 3</text>
+    <text x="580" y="298" text-anchor="middle" class="node-title">Evaluate Risks</text>
+    <text x="580" y="320" text-anchor="middle" class="node-text">Compare metrics vs</text>
+    <text x="580" y="335" text-anchor="middle" class="node-text">thresholds (L/M/H)</text>
+  </g>
+
+  <!-- Arrow to Step 4 -->
+  <path d="M 670 300 L 720 300" class="arrow"/>
+
+  <!-- Step 4: Search Regulatory Updates -->
+  <g>
+    <rect x="720" y="250" width="180" height="100" class="node-search" rx="8"/>
+    <text x="810" y="275" text-anchor="middle" class="node-title">Step 4</text>
+    <text x="810" y="298" text-anchor="middle" class="node-title">Search Regulatory</text>
+    <text x="810" y="320" text-anchor="middle" class="node-text">Find recent compliance</text>
+    <text x="810" y="335" text-anchor="middle" class="node-text">news via DuckDuckGo</text>
+  </g>
+
+  <!-- Arrow down and right -->
+  <path d="M 810 350 L 810 390 L 950 390 L 950 350" class="arrow"/>
+
+  <!-- Step 5: Retrieve HRSA Guidance -->
+  <g>
+    <rect x="870" y="250" width="180" height="100" class="node-search" rx="8"/>
+    <text x="960" y="275" text-anchor="middle" class="node-title">Step 5</text>
+    <text x="960" y="298" text-anchor="middle" class="node-title">Retrieve HRSA</text>
+    <text x="960" y="320" text-anchor="middle" class="node-text">Latest 340B program</text>
+    <text x="960" y="335" text-anchor="middle" class="node-text">guidance &amp; updates</text>
+  </g>
+
+  <!-- Arrow down to Step 6 -->
+  <path d="M 960 350 L 960 420" class="arrow"/>
+
+  <!-- Step 6: Generate Report -->
+  <g>
+    <rect x="870" y="420" width="180" height="100" class="node-output" rx="8"/>
+    <text x="960" y="445" text-anchor="middle" class="node-title">Step 6</text>
+    <text x="960" y="468" text-anchor="middle" class="node-title">Generate Report</text>
+    <text x="960" y="490" text-anchor="middle" class="node-text">AI-generated executive</text>
+    <text x="960" y="505" text-anchor="middle" class="node-text">summary with Claude</text>
+  </g>
+
+  <!-- Output -->
+  <g>
+    <rect x="870" y="550" width="180" height="80" class="node-output" rx="8"/>
+    <text x="960" y="575" text-anchor="middle" class="node-title">📄 Output Report</text>
+    <text x="960" y="598" text-anchor="middle" class="node-text">compliance_output/</text>
+    <text x="960" y="613" text-anchor="middle" class="node-text">risk_report.txt</text>
+  </g>
+
+  <!-- Arrow to Output -->
+  <path d="M 960 520 L 960 550" class="arrow"/>
+
+  <!-- Risk Thresholds Legend -->
+  <text x="50" y="480" class="subheader">Risk Thresholds</text>
+  
+  <rect x="30" y="500" width="810" height="140" class="legend-box" rx="5"/>
+
+  <!-- Risk Table Header -->
+  <text x="50" y="525" class="label">Metric</text>
+  <text x="250" y="525" class="label">Low Risk</text>
+  <text x="450" y="525" class="label">Medium Risk</text>
+  <text x="670" y="525" class="label">High Risk</text>
+
+  <!-- Negative Accumulation Row -->
+  <text x="50" y="555" class="node-text" font-weight="bold">Negative Accumulation</text>
+  <circle cx="310" cy="545" r="8" class="risk-low"/>
+  <text x="250" y="555" class="node-text">0–5</text>
+  <circle cx="510" cy="545" r="8" class="risk-medium"/>
+  <text x="450" y="555" class="node-text">6–15</text>
+  <circle cx="730" cy="545" r="8" class="risk-high"/>
+  <text x="670" y="555" class="node-text">&gt;15</text>
+
+  <!-- Match Rate Row -->
+  <text x="50" y="585" class="node-text" font-weight="bold">Match Rate %</text>
+  <circle cx="310" cy="575" r="8" class="risk-low"/>
+  <text x="450" y="585" class="node-text">&gt;85%</text>
+  <circle cx="510" cy="575" r="8" class="risk-medium"/>
+  <text x="450" y="585" class="node-text">70–85%</text>
+  <circle cx="730" cy="575" r="8" class="risk-high"/>
+  <text x="670" y="585" class="node-text">&lt;70%</text>
+
+  <!-- Referral Capture Row -->
+  <text x="50" y="615" class="node-text" font-weight="bold">Referral Capture %</text>
+  <circle cx="310" cy="605" r="8" class="risk-low"/>
+  <text x="450" y="615" class="node-text">&gt;60%</text>
+  <circle cx="510" cy="605" r="8" class="risk-medium"/>
+  <text x="450" y="615" class="node-text">40–60%</text>
+  <circle cx="730" cy="605" r="8" class="risk-high"/>
+  <text x="670" y="615" class="node-text">&lt;40%</text>
+
+  <!-- Data Flow Section -->
+  <text x="50" y="680" class="subheader">Data Flow Through Workflow</text>
+
+  <!-- Data flow connections -->
+  <g>
+    <!-- From data sources to Step 1 -->
+    <path d="M 100 180 L 100 250" class="data-arrow"/>
+    <path d="M 270 180 L 120 250" class="data-arrow"/>
+    
+    <!-- From Step 1 to Step 2 -->
+    <path d="M 210 280 L 260 280" class="data-arrow"/>
+    
+    <!-- From Step 2 to Step 3 -->
+    <path d="M 440 280 L 490 280" class="data-arrow"/>
+    
+    <!-- From Step 3 to Step 4 -->
+    <path d="M 670 280 L 720 280" class="data-arrow"/>
+    
+    <!-- From Step 4 & 5 to Step 6 -->
+    <path d="M 900 350 L 920 350 L 920 420 L 920 420" class="data-arrow"/>
+    <path d="M 960 350 L 960 420" class="data-arrow"/>
+  </g>
+
+  <!-- Legend for arrows -->
+  <text x="50" y="710" class="label">Solid Arrows:</text>
+  <text x="180" y="710" class="node-text">Workflow execution flow</text>
+  
+  <text x="50" y="730" class="label">Dashed Arrows:</text>
+  <text x="180" y="730" class="node-text">Data flow between nodes</text>
+
+  <!-- Key Features Box -->
+  <rect x="30" y="760" width="810" height="200" class="legend-box" rx="5"/>
+  <text x="50" y="785" class="subheader">Key Features</text>
+
+  <text x="50" y="815" class="node-text">✓ <tspan font-weight="bold">Multi-step Orchestration:</tspan> LangGraph manages the workflow execution order</text>
+  <text x="50" y="840" class="node-text">✓ <tspan font-weight="bold">Risk Classification:</tspan> Each customer metric evaluated against thresholds (Low/Medium/High)</text>
+  <text x="50" y="865" class="node-text">✓ <tspan font-weight="bold">Real-time Data:</tspan> Pulls latest compliance updates from DuckDuckGo and HRSA web searches</text>
+  <text x="50" y="890" class="node-text">✓ <tspan font-weight="bold">AI-Generated Reports:</tspan> Claude creates executive summaries with risk insights</text>
+  <text x="50" y="915" class="node-text">✓ <tspan font-weight="bold">Type Safety:</tspan> Pydantic models validate data (RiskEvaluation, CustomerRiskReport)</text>
+  <text x="50" y="940" class="node-text">✓ <tspan font-weight="bold">Knowledge Base Integration:</tspan> AWS Bedrock retrieves pre-indexed risk definitions and metrics</text>
+</svg>

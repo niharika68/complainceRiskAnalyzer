@@ -1,2 +1,261 @@
-# complainceRiskAnalyzer
-Based on customer Metrics analyzes if the customer is in 340B compliance risk or not
+# 🏥 Compliance Risk Analyzer
+
+**340B Program Compliance Risk Monitoring System**
+
+Based on customer metrics, this system automatically analyzes if healthcare organizations are in 340B compliance risk and generates comprehensive risk reports with AI-powered insights.
+
+---
+
+## 📊 System Architecture
+
+```svg
+<svg viewBox="0 0 1400 1200" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+    </marker>
+    <style>
+      .title { font-size: 24px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 13px; fill: #666; }
+      .layer-label { font-size: 14px; font-weight: bold; fill: #1a1a1a; }
+      .box-title { font-size: 15px; font-weight: bold; fill: white; }
+      .box-detail { font-size: 11px; fill: white; opacity: 0.9; }
+      .arrow { stroke: #333; stroke-width: 3; fill: none; }
+      .dashed-arrow { stroke: #e74c3c; stroke-width: 2; fill: none; stroke-dasharray: 5,5; }
+      .box1 { fill: #4caf50; stroke: #388e3c; stroke-width: 2; }
+      .box2 { fill: #f44336; stroke: #c62828; stroke-width: 2; }
+      .box3 { fill: #9c27b0; stroke: #7b1fa2; stroke-width: 2; }
+      .box4 { fill: #2196f3; stroke: #1565c0; stroke-width: 2; }
+      .box5 { fill: #ff9800; stroke: #e65100; stroke-width: 2; }
+      .box6 { fill: #009688; stroke: #00695c; stroke-width: 2; }
+      .legend-text { font-size: 12px; fill: #333; }
+    </style>
+  </defs>
+
+  <text x="700" y="35" text-anchor="middle" class="title">Compliance Risk Analyzer - Complete Architecture</text>
+  <text x="700" y="52" text-anchor="middle" class="subtitle">340B Program Compliance Monitoring with AI &amp; LangGraph Workflow</text>
+
+  <!-- LAYER 1: AWS Infrastructure -->
+  <rect x="20" y="75" width="1360" height="150" fill="#e8f5e9" stroke="#4caf50" stroke-width="2" rx="8"/>
+  <text x="30" y="97" class="layer-label">LAYER 1: AWS INFRASTRUCTURE AND RAG</text>
+
+  <rect x="40" y="120" width="160" height="90" class="box1" rx="5"/>
+  <text x="120" y="145" text-anchor="middle" class="box-title">Amazon S3</text>
+  <text x="120" y="163" text-anchor="middle" class="box-detail">Data Storage</text>
+  <text x="120" y="180" text-anchor="middle" class="box-detail">Customer Metrics</text>
+  <text x="120" y="195" text-anchor="middle" class="box-detail">&amp; Risk Definitions</text>
+
+  <path d="M 200 165 L 250 165" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="250" y="120" width="160" height="90" class="box1" rx="5"/>
+  <text x="330" y="145" text-anchor="middle" class="box-title">Bedrock KB</text>
+  <text x="330" y="163" text-anchor="middle" class="box-detail">Knowledge Base</text>
+  <text x="330" y="180" text-anchor="middle" class="box-detail">Retriever &amp; Indexer</text>
+  <text x="330" y="195" text-anchor="middle" class="box-detail">Vector Search</text>
+
+  <path d="M 410 165 L 460 165" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="120" width="160" height="90" class="box1" rx="5"/>
+  <text x="540" y="145" text-anchor="middle" class="box-title">Bedrock LLM</text>
+  <text x="540" y="163" text-anchor="middle" class="box-detail">Amazon Nova Lite</text>
+  <text x="540" y="180" text-anchor="middle" class="box-detail">v1:0</text>
+  <text x="540" y="195" text-anchor="middle" class="box-detail">Text Generation</text>
+
+  <path d="M 620 165 L 880 165" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="880" y="120" width="160" height="90" class="box1" rx="5"/>
+  <text x="960" y="145" text-anchor="middle" class="box-title">LangGraph</text>
+  <text x="960" y="163" text-anchor="middle" class="box-detail">Workflow Runtime</text>
+  <text x="960" y="180" text-anchor="middle" class="box-detail">Orchestrator &amp;</text>
+  <text x="960" y="195" text-anchor="middle" class="box-detail">State Management</text>
+
+  <path d="M 1040 165 L 1090 165" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="1090" y="120" width="160" height="90" class="box1" rx="5"/>
+  <text x="1170" y="145" text-anchor="middle" class="box-title">Poetry &amp;</text>
+  <text x="1170" y="163" text-anchor="middle" class="box-title">Pydantic</text>
+  <text x="1170" y="180" text-anchor="middle" class="box-detail">Dependency Mgmt</text>
+  <text x="1170" y="195" text-anchor="middle" class="box-detail">Type Validation</text>
+
+  <!-- LAYER 2: RAG Knowledge Base Content -->
+  <rect x="20" y="245" width="1360" height="130" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="8"/>
+  <text x="30" y="267" class="layer-label">LAYER 2: RAG KNOWLEDGE BASE CONTENT</text>
+
+  <path d="M 120 215 L 120 280" class="dashed-arrow" marker-end="url(#arrowhead-red)"/>
+  <path d="M 330 215 L 330 280" class="dashed-arrow" marker-end="url(#arrowhead-red)"/>
+
+  <rect x="40" y="290" width="220" height="75" class="box2" rx="5"/>
+  <text x="150" y="313" text-anchor="middle" class="box-title">Risk Indicators</text>
+  <text x="150" y="333" text-anchor="middle" class="box-detail">Negative Accumulation Count</text>
+  <text x="150" y="348" text-anchor="middle" class="box-detail">Match Rate % &amp; Referral Capture %</text>
+
+  <rect x="320" y="290" width="220" height="75" class="box2" rx="5"/>
+  <text x="430" y="313" text-anchor="middle" class="box-title">Customer Metrics</text>
+  <text x="430" y="333" text-anchor="middle" class="box-detail">Incident Data, Eligibility Stats</text>
+  <text x="430" y="348" text-anchor="middle" class="box-detail">Referral &amp; Ordering Records</text>
+
+  <rect x="600" y="290" width="220" height="75" class="box2" rx="5"/>
+  <text x="710" y="313" text-anchor="middle" class="box-title">Compliance Rules</text>
+  <text x="710" y="333" text-anchor="middle" class="box-detail">340B Program Guidelines</text>
+  <text x="710" y="348" text-anchor="middle" class="box-detail">Diversion Control Regulations</text>
+
+  <rect x="880" y="290" width="220" height="75" class="box2" rx="5"/>
+  <text x="990" y="313" text-anchor="middle" class="box-title">Regulatory Updates</text>
+  <text x="990" y="333" text-anchor="middle" class="box-detail">Recent HRSA Guidance Changes</text>
+  <text x="990" y="348" text-anchor="middle" class="box-detail">Compliance Requirement Updates</text>
+
+  <text x="50" y="385" class="legend-text">All documents indexed in RAG with vector embeddings for semantic search</text>
+
+  <!-- LAYER 3: LangGraph Workflow -->
+  <rect x="20" y="410" width="1360" height="140" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2" rx="8"/>
+  <text x="30" y="432" class="layer-label">LAYER 3: LANGGRAPH WORKFLOW (6 AGENT STEPS)</text>
+
+  <rect x="40" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="122" y="478" text-anchor="middle" class="box-title">Step 1</text>
+  <text x="122" y="498" text-anchor="middle" class="box-detail">Retrieve Customer</text>
+  <text x="122" y="513" text-anchor="middle" class="box-detail">Metrics from S3/KB</text>
+
+  <path d="M 205 497 L 240 497" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="240" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="322" y="478" text-anchor="middle" class="box-title">Step 2</text>
+  <text x="322" y="498" text-anchor="middle" class="box-detail">Retrieve Risk</text>
+  <text x="322" y="513" text-anchor="middle" class="box-detail">Definitions/KB</text>
+
+  <path d="M 405 497 L 440 497" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="440" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="522" y="478" text-anchor="middle" class="box-title">Step 3</text>
+  <text x="522" y="498" text-anchor="middle" class="box-detail">Evaluate Risks</text>
+  <text x="522" y="513" text-anchor="middle" class="box-detail">vs Thresholds</text>
+
+  <path d="M 605 497 L 640 497" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="640" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="722" y="478" text-anchor="middle" class="box-title">Step 4</text>
+  <text x="722" y="498" text-anchor="middle" class="box-detail">Search Regulatory</text>
+  <text x="722" y="513" text-anchor="middle" class="box-detail">Updates (Web)</text>
+
+  <path d="M 805 497 L 840 497" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="840" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="922" y="478" text-anchor="middle" class="box-title">Step 5</text>
+  <text x="922" y="498" text-anchor="middle" class="box-detail">Retrieve HRSA</text>
+  <text x="922" y="513" text-anchor="middle" class="box-detail">Guidance</text>
+
+  <path d="M 1005 497 L 1040 497" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <rect x="1040" y="455" width="165" height="85" class="box3" rx="5"/>
+  <text x="1122" y="478" text-anchor="middle" class="box-title">Step 6</text>
+  <text x="1122" y="498" text-anchor="middle" class="box-detail">Generate Report</text>
+  <text x="1122" y="513" text-anchor="middle" class="box-detail">AI Summary</text>
+
+  <path d="M 700 540 L 700 575" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- LAYER 4: Risk Detection -->
+  <rect x="20" y="575" width="1360" height="130" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="8"/>
+  <text x="30" y="597" class="layer-label">LAYER 4: RISK EVALUATION &amp; CLASSIFICATION ENGINE</text>
+
+  <rect x="40" y="620" width="1320" height="70" class="box4" rx="5"/>
+  <text x="700" y="645" text-anchor="middle" class="box-title">Risk Assessment Engine</text>
+  <text x="130" y="670" class="box-detail">• Metric vs Threshold Comparison</text>
+  <text x="400" y="670" class="box-detail">• Low/Medium/High Risk Classification</text>
+  <text x="780" y="670" class="box-detail">• Risk Score Aggregation</text>
+  <text x="1070" y="670" class="box-detail">• Customer Risk Profile</text>
+
+  <path d="M 700 690 L 700 725" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- LAYER 5: AI-Powered Insights -->
+  <rect x="20" y="725" width="1360" height="140" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="8"/>
+  <text x="30" y="747" class="layer-label">LAYER 5: AI-POWERED INSIGHTS (Amazon Nova Lite)</text>
+
+  <rect x="40" y="770" width="400" height="85" class="box5" rx="5"/>
+  <text x="240" y="793" text-anchor="middle" class="box-title">Risk Analysis</text>
+  <text x="240" y="813" text-anchor="middle" class="box-detail">Risk scores per customer (L/M/H)</text>
+  <text x="240" y="828" text-anchor="middle" class="box-detail">Metric-specific insights</text>
+
+  <rect x="500" y="770" width="400" height="85" class="box5" rx="5"/>
+  <text x="700" y="793" text-anchor="middle" class="box-title">Executive Summary</text>
+  <text x="700" y="813" text-anchor="middle" class="box-detail">Key findings from compliance review</text>
+  <text x="700" y="828" text-anchor="middle" class="box-detail">Risk mitigation recommendations</text>
+
+  <rect x="960" y="770" width="400" height="85" class="box5" rx="5"/>
+  <text x="1160" y="793" text-anchor="middle" class="box-title">Visualizations</text>
+  <text x="1160" y="813" text-anchor="middle" class="box-detail">Risk distribution charts</text>
+  <text x="1160" y="828" text-anchor="middle" class="box-detail">Trend analysis graphs</text>
+
+  <path d="M 700 855 L 700 890" class="arrow" marker-end="url(#arrowhead)"/>
+
+  <!-- LAYER 6: Outputs -->
+  <rect x="20" y="890" width="1360" height="130" fill="#e0f2f1" stroke="#009688" stroke-width="2" rx="8"/>
+  <text x="30" y="912" class="layer-label">LAYER 6: AGENT OUTPUTS</text>
+
+  <rect x="40" y="935" width="400" height="75" class="box6" rx="5"/>
+  <text x="240" y="958" text-anchor="middle" class="box-title">Text Report</text>
+  <text x="240" y="978" text-anchor="middle" class="box-detail">risk_report.txt (~30KB)</text>
+  <text x="240" y="993" text-anchor="middle" class="box-detail">Executive summary &amp; metrics</text>
+
+  <rect x="500" y="935" width="400" height="75" class="box6" rx="5"/>
+  <text x="700" y="958" text-anchor="middle" class="box-title">Detailed Analysis</text>
+  <text x="700" y="978" text-anchor="middle" class="box-detail">analytics_report.json</text>
+  <text x="700" y="993" text-anchor="middle" class="box-detail">Per-customer risk breakdown</text>
+
+  <rect x="960" y="935" width="400" height="75" class="box6" rx="5"/>
+  <text x="1160" y="958" text-anchor="middle" class="box-title">Visualizations</text>
+  <text x="1160" y="978" text-anchor="middle" class="box-detail">compliance_output/</text>
+  <text x="1160" y="993" text-anchor="middle" class="box-detail">Risk matrices &amp; charts</text>
+
+  <!-- Data Flow Summary -->
+  <rect x="20" y="1045" width="1360" height="135" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="5"/>
+  <text x="30" y="1067" class="layer-label">DATA FLOW SUMMARY:</text>
+
+  <text x="40" y="1095" class="legend-text"><tspan style="font-weight: bold;">1.</tspan> S3 &amp; Bedrock KB receive customer metrics and risk indicators with vector embeddings for semantic search</text>
+  <text x="40" y="1115" class="legend-text"><tspan style="font-weight: bold;">2.</tspan> Bedrock retrieves &amp; ranks documents; LLM processes context windows for semantically-aware reasoning</text>
+  <text x="40" y="1135" class="legend-text"><tspan style="font-weight: bold;">3.</tspan> LangGraph orchestrates 6 sequential agent steps with state management between transitions</text>
+  <text x="40" y="1155" class="legend-text"><tspan style="font-weight: bold;">4.</tspan> Risk engine evaluates metrics using Pydantic-validated models (RiskEvaluation, CustomerRiskReport)</text>
+  <text x="40" y="1175" class="legend-text"><tspan style="font-weight: bold;">5.</tspan> Amazon Nova generates executive summaries with AI insights; outputs CSV, JSON &amp; visualization artifacts</text>
+</svg>
+```
+
+---
+
+## 🎯 Layer 1: AWS Infrastructure & RAG (Simplified)
+
+**What is Layer 1?**
+
+Layer 1 is the foundation that gathers and prepares all the information needed to check compliance. Think of it as a smart librarian:
+
+| Component | What It Does | Simple Analogy |
+|-----------|-------------|-----------------|
+| **Amazon S3** | Stores customer data and risk definitions | File cabinet with all the records |
+| **Bedrock KB** | Indexes and organizes all documents for fast searching | Card catalog that helps find information quickly |
+| **Bedrock LLM** | The AI brain that understands and generates text | Smart assistant who reads and writes |
+| **LangGraph** | Orchestrates the entire workflow step-by-step | Project manager directing all the work |
+| **Poetry & Pydantic** | Manages dependencies and validates data quality | Quality control ensuring everything is properly formatted |
+
+**How they work together:**
+1. S3 provides the data → Bedrock KB indexes it → LLM understands it
+2. External APIs bring in the latest compliance rules
+3. LangGraph coordinates everything in the right order
+4. All data is validated to ensure correctness
+
+---
+
+## 🔑 Key Features
+
+- ✅ **Multi-step Orchestration**: LangGraph manages the workflow execution order
+- ✅ **Risk Classification**: Each customer metric evaluated against thresholds (Low/Medium/High)
+- ✅ **Real-time Data**: Pulls latest compliance updates from DuckDuckGo and HRSA web searches
+- ✅ **AI-Generated Reports**: Amazon Nova creates executive summaries with risk insights
+- ✅ **Type Safety**: Pydantic models validate data (RiskEvaluation, CustomerRiskReport)
+- ✅ **Knowledge Base Integration**: AWS Bedrock retrieves pre-indexed risk definitions and metrics
+
+---
+
+## 📖 Documentation
+
+- [How It Works](HOW_IT_WORKS.md) - Detailed explanation of the workflow and data flow
+- [Workflow Details](WORKFLOW.md) - Technical workflow specifications
